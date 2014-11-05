@@ -1,17 +1,21 @@
 package com.iplab.neriwasabiseijin.maprotation;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity {
+public class MapsActivity extends FragmentActivity{
 
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    static GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    static CameraPosition.Builder builder;
+    static float nowAngle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +50,14 @@ public class MapsActivity extends FragmentActivity {
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+            nowAngle = 0f;
+
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
             }
 
-            Toast.makeText(this, mMap.toString(), Toast.LENGTH_LONG).show();
+            // Toast.makeText(this, mMap.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -63,5 +69,17 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    }
+
+    static void rotateMap(float bearing) {
+        nowAngle += bearing;
+        if(nowAngle>=360f){nowAngle=0f;}
+
+        builder = new CameraPosition.Builder(mMap.getCameraPosition());
+        builder.bearing(-nowAngle);
+        CameraPosition position = builder.build();
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
+        mMap.animateCamera(update);
+//        mMap.moveCamera(update);
     }
 }
