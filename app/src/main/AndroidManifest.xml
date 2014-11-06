@@ -22,7 +22,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA1xro_wMXs273qteNomYAvi5x1sgBCGYE" />
+            android:value="AIzaSyDm8hSb1Wc8b8zN7NJzEHChe2IKuu4ayLI" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
