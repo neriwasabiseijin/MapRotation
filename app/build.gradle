@@ -2,14 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 20
-    buildToolsVersion "20.0.0"
-
+    buildToolsVersion '20.0.0'
     defaultConfig {
-        applicationId "com.iplab.neriwasabiseijin.maprotation"
+        applicationId 'com.iplab.neriwasabiseijin.maprotation'
         minSdkVersion 17
         targetSdkVersion 17
         versionCode 1
-        versionName "1.0"
+        versionName '1.0'
     }
     buildTypes {
         release {
@@ -18,13 +17,15 @@ android {
         }
     }
     signingConfigs {
-        debug{
+        debug {
             // debug.keystore location and pass
             storeFile file("../keystore/debug_mapRotation.keystore")
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+    }
+    productFlavors {
     }
 }
 

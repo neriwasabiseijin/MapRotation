@@ -68,7 +68,14 @@ public class MapsActivity extends FragmentActivity{
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(34.706412, 137.615001)).title("WISS2014会場"));
+
+        CameraPosition.Builder builder = new CameraPosition.Builder(mMap.getCameraPosition());
+        builder.zoom(12);
+        builder.target(new LatLng( 34.706412,137.615001));
+        CameraPosition position = builder.build();
+        CameraUpdate update = CameraUpdateFactory.newCameraPosition(position);
+        mMap.moveCamera(update);
     }
 
     static void rotateMap(float bearing) {

@@ -18,6 +18,7 @@ public class GetHoverView extends View implements View.OnHoverListener{
 
     private long startTime;
     private boolean isFirstHover;
+    private boolean isFirstClossing;
     private MyTimerTask timerTask;
     Timer mTimer;
     private Handler mHandler;
@@ -63,11 +64,13 @@ public class GetHoverView extends View implements View.OnHoverListener{
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        isFirstClossing = false;//タッチイベントが起こったら終了
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Log.v("onTouchEvent", "ACTION_DOWN");
-                if(mTimer != null)
+                if(mTimer != null) {
                     mTimer.cancel(); //shiftさせない
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 Log.v("onTouchEvent","ACTION_UP");
@@ -98,11 +101,20 @@ public class GetHoverView extends View implements View.OnHoverListener{
                 long b = stopTime - startTime;
                 Log.v("onHover", "Action_Hover_Exit" + "stopTime-startTime :" + b);
                 if(THRESHOLD > b){
+                    if(isFirstClossing){
+                        //タイマーの初期化処理
+                        timerTask = new MyTimerTask();
+                        mTimer = new Timer(true);
+                        //0.05秒後に実行．その前にタッチイベントが起こればキャンセルさせるため．
+                        mTimer.schedule(timerTask,50);
+                    }
+                    isFirstClossing = true;
                     //タイマーの初期化処理
-                    timerTask = new MyTimerTask();
-                    mTimer = new Timer(true);
+                    //timerTask = new MyTimerTask();
+                    //mTimer = new Timer(true);
                     //0.05秒後に実行．その前にタッチイベントが起こればキャンセルさせるため．
-                    mTimer.schedule(timerTask,50);
+                    //mTimer.schedule(timerTask,50);
+
                     //フツーに実行
                     //Shift();
                 }
